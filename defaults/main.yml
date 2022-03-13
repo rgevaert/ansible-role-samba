@@ -16,3 +16,6 @@ samba_create_users: false
 
 # List of local samba users
 samba_users: []
+
+# List of samba scripts
+samba_scripts: []

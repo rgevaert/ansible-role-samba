@@ -32,6 +32,26 @@
     enabled: yes
   loop: "{{ samba_services }}"
 
+- name: Distribute samba scripts from non-template
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: '0755'
+  loop: "{{ samba_scripts }}"
+  when: item.src is not search('.j2$')
+
+- name: Distribute samba scripts from template
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: '0755'
+  loop: "{{ samba_scripts }}"
+  when: item.src is search('.j2$')
+
 - name: Ensure that the samba users exists
   user:
     name: "{{ item.name }}"

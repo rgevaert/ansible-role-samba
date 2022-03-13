@@ -1,0 +1,34 @@
+---
+
+# Generic
+generic:
+  role: ansible-role-samba
+  role_short: samba
+  role_description: |
+    Install/configure samba
+
+molecule:
+  converge:
+    vars:
+      samba_create_users: true
+      samba_users:
+        - name: user1
+          password: password1
+        - name: user2
+          password: password2
+      samba_shares:
+        - name: homes
+          settings:
+            comment: Home Directories
+            browseable: 'yes'
+            read__only: 'no'
+            create__mask: '0700'
+            directory__mask: '0700'
+            valid__users: '%S'
+            writeable: 'yes'
+            public: 'yes'
+        - name: private
+          settings:
+            comment: private directories
+            browseable: 'no'
+            public: 'no'

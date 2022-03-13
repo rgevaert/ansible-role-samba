@@ -1,0 +1,22 @@
+---
+
+# Packages required to install samba
+samba_packages:
+  - samba
+  - cifs-utils
+
+# samba service
+samba_services:
+  - smb
+
+# Confiuration template
+samba_conf: samba.conf.j2
+
+# List of shares
+samba_shares: []
+
+# Should the samba users be defined as OS users
+samba_create_users: false
+
+# List of local samba users
+samba_users: []

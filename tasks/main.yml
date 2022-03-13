@@ -1,0 +1,56 @@
+---
+
+- name: Load variables based on OS type
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+        - "{{ ansible_distribution }}.yml"
+        - "family-{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+        - "family-{{ ansible_os_family }}.yml"
+        - default.yml
+      paths:
+        - vars
+
+- name: Install samba packages
+  package:
+    name: "{{ samba_packages }}"
+    state: present 
+
+- name: Create samba configuration file from template
+  template:
+    src: "{{ samba_conf }}"
+    dest: /etc/samba/smb.conf
+    mode: '0644'
+  notify: Restart samba
+
+- name: Start samba services
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop: "{{ samba_services }}"
+
+- name: Ensure that the samba users exists
+  user:
+    name: "{{ item.name }}"
+    state: present
+  loop: "{{ samba_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: samba_create_users|bool
+
+- name: Configure Samba users.
+  shell: |
+    set -o pipefail
+    if ! pdbedit --user={{ item.name }} >/dev/null 2>&1
+    then
+      echo -e "{{ item.password }}\n{{ item.password }}\n" | \
+      smbpasswd -s -a {{ item.name }}
+    fi
+  register: smbpasswd
+  changed_when: "'Added user' in smbpasswd.stdout"
+  loop: "{{ samba_users }}"
+  loop_control:
+    label: "{{ item.name }}"

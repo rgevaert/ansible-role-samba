@@ -1,0 +1,28 @@
+#/etc/samba/smb.conf
+[global]
+    workgroup = WORKGROUP
+        server string = %h server (Samba, Ubuntu)
+    dns proxy = no
+    log file = /var/log/samba/log.%m
+    max log size = 1000
+    panic action = /usr/share/samba/panic-action %d
+    server role = standalone server
+    passdb backend = tdbsam
+    obey pam restrictions = yes
+    unix password sync = yes
+    passwd program = /usr/bin/passwd %u
+    passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
+    pam password change = yes
+    usershare allow guests = yes
+    client min protocol = SMB3
+    client max protocol = SMB3
+    restrict anonymous = 2
+    tls enabled = no
+
+{% for share in samba_shares %}
+[{{ share.name }}]
+{%- for key, value in share.settings.items() %} 
+    {{ key | regex_replace('__', ' ') }} = {{ value }}
+{%- endfor %}
+
+{% endfor %}

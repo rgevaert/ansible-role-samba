@@ -15,9 +15,9 @@ molecule:
   converge:
     vars:
       samba_scripts:
-        - name: test1.sh.j2
+        - src: test1.sh.j2
           dest: /tmp/test1.sh
-        - name: test2.sh
+        - src: test2.sh
           dest: /tmp/test2.sh
       samba_create_users: true
       samba_users:

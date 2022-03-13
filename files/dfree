@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Simple script for samba, so disk total & available size can be retrieved
+
+df "$1" | tail -1 | awk '{print $(NF-4),$(NF-2)}'

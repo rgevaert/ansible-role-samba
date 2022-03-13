@@ -7,6 +7,7 @@
     proxy_use: "{{ lookup('env', 'proxy_use') | default(False, True) | bool }}"
     proxy_url: "{{ lookup('env', 'proxy_url') | default('http://127.0.0.1:3128', True) }}"
     molecule_distro: "{{ lookup('env', 'MOLECULE_DISTRO') }}"
+    prepare_firewall: True
   tasks:
 
     - block:
@@ -119,7 +120,7 @@
         - name: Install firewalld
           include_role:
             name: firewalld
-          when: molecule_distro in [ 'centos8', 'oraclelinux8', 'rockylinux8', 'almalinux8' ]
+          when: molecule_distro in [ 'fedora34', 'fedora35', 'fedora36', 'centos8', 'oraclelinux8', 'rockylinux8', 'almalinux8' ]
 
       when: prepare_firewall is defined and prepare_firewall|bool
 

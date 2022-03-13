@@ -5,10 +5,6 @@ samba_packages:
   - samba
   - cifs-utils
 
-# samba service
-samba_services:
-  - smb
-
 # Confiuration template
 samba_conf: samba.conf.j2
 

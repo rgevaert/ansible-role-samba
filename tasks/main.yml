@@ -32,7 +32,15 @@
     enabled: yes
   loop: "{{ samba_services }}"
 
-- name: Distribute samba scripts from non-template
+- name: Copy dfree script
+  copy:
+    src: dfree
+    dest: "{{ samba_dfree_script }}"
+    owner: root
+    group: root
+    mode: '0755'
+    
+- name: Distribute custom samba scripts from non-template
   copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -42,7 +50,7 @@
   loop: "{{ samba_scripts }}"
   when: item.src is not search('\.j2$')
 
-- name: Distribute samba scripts from template
+- name: Distribute custom samba scripts from template
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"

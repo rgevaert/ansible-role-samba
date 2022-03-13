@@ -8,6 +8,9 @@ samba_packages:
 # Confiuration template
 samba_conf: samba.conf.j2
 
+# dfree script
+samba_dfree_script: /usr/local/bin/dfree
+
 # List of shares
 samba_shares: []
 

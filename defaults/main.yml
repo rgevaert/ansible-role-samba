@@ -5,7 +5,13 @@ samba_packages:
   - samba
   - cifs-utils
 
-# Confiuration template
+# Should this server function within ActiveDirectory
+samba_ad: true
+
+# Should this server support legacy Netbios
+samba_netbios: false
+
+# Configuration template
 samba_conf: samba.conf.j2
 
 # dfree script
@@ -22,3 +28,15 @@ samba_users: []
 
 # List of samba scripts
 samba_scripts: []
+
+# should this role manage firewall rules
+samba_manage_firewall: true
+
+# samba firewall ports
+samba_firewall_ports_netbios:
+  - { port: 137, proto: udp }
+  - { port: 138, proto: udp }
+  - { port: 139, proto: tcp }
+samba_firewall_ports_ad:
+  - { port: 445, proto: tcp }
+  - { port: 445, proto: udp }

@@ -86,3 +86,21 @@
   loop: "{{ samba_users }}"
   loop_control:
     label: "{{ item.name }}"
+
+- name: Manage samba firewall ports (netbios)
+  include_role:
+    name: firewall
+  vars:
+    firewall_ports: "{{ samba_firewall_ports_netbios }}"
+  when:
+    - samba_manage_firewall|bool
+    - samba_netbios|bool
+
+- name: Manage samba firewall ports (ActiveDirectory)
+  include_role:
+    name: firewall
+  vars:
+    firewall_ports: "{{ samba_firewall_ports_ad }}"
+  when:
+    - samba_manage_firewall|bool
+    - samba_ad|bool

@@ -14,6 +14,11 @@ github:
 molecule:
   converge:
     vars:
+      samba_scripts:
+        - name: test1.sh.j2
+          dest: /tmp/test1.sh
+        - name: test2.sh
+          dest: /tmp/test2.sh
       samba_create_users: true
       samba_users:
         - name: user1
@@ -31,8 +36,11 @@ molecule:
             valid__users: '%S'
             writeable: 'yes'
             public: 'yes'
+            dfree__command: /tmp/test1.sh
         - name: private
           settings:
             comment: private directories
             browseable: 'no'
             public: 'no'
+            dfree__command: /tmp/test2.sh
+

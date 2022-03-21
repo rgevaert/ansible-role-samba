@@ -1,7 +1,7 @@
 #/etc/samba/smb.conf
 [global]
     workgroup = WORKGROUP
-        server string = %h server (Samba, Ubuntu)
+    server string = %h server (Samba, Ubuntu)
     dns proxy = no
     log file = /var/log/samba/log.%m
     max log size = 1000
@@ -21,7 +21,7 @@
 
 {% for share in samba_shares %}
 [{{ share.name }}]
-{%- for key, value in share.settings.items() %} 
+{%- for key, value in share.settings.items() %}
     {{ key | regex_replace('__', ' ') }} = {{ value }}
 {%- endfor %}
 

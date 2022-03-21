@@ -18,7 +18,6 @@ Supported platforms
 - Debian 11 (Bullseye)
 - Ubuntu 18.04 LTS
 - Ubuntu 20.04 LTS
-- Fedora 34
 
 
 
@@ -30,12 +29,17 @@ samba_packages:
   - samba
   - cifs-utils
 
-# samba service
-samba_services:
-  - smb
+# Should this server function within ActiveDirectory
+samba_ad: true
 
-# Confiuration template
+# Should this server support legacy Netbios
+samba_netbios: false
+
+# Configuration template
 samba_conf: samba.conf.j2
+
+# dfree script
+samba_dfree_script: /usr/local/bin/dfree
 
 # List of shares
 samba_shares: []
@@ -45,6 +49,21 @@ samba_create_users: false
 
 # List of local samba users
 samba_users: []
+
+# List of samba scripts
+samba_scripts: []
+
+# should this role manage firewall rules
+samba_manage_firewall: true
+
+# samba firewall ports
+samba_firewall_ports_netbios:
+  - { port: 137, proto: udp }
+  - { port: 138, proto: udp }
+  - { port: 139, proto: tcp }
+samba_firewall_ports_ad:
+  - { port: 445, proto: tcp }
+  - { port: 445, proto: udp }
 </pre></code>
 
 
@@ -55,9 +74,11 @@ Example Playbook
 - name: sample playbook for role 'samba'
   hosts: all
   vars:
+    samba_ad: True
+    samba_netbios: True
     samba_create_users: True
     samba_users: [{'name': 'user1', 'password': 'password1'}, {'name': 'user2', 'password': 'password2'}]
-    samba_shares: [{'name': 'homes', 'settings': {'comment': 'Home Directories', 'browseable': 'yes', 'read__only': 'no', 'create__mask': '0700', 'directory__mask': '0700', 'valid__users': '%S', 'writeable': 'yes', 'public': 'yes'}}, {'name': 'private', 'settings': {'comment': 'private directories', 'browseable': 'no', 'public': 'no'}}]
+    samba_shares: [{'name': 'homes', 'settings': {'comment': 'Home Directories', 'browseable': 'yes', 'read__only': 'no', 'create__mask': '0700', 'directory__mask': '0700', 'valid__users': '%S', 'writeable': 'yes', 'public': 'yes', 'dfree__command': '/usr/local/bin/dfree'}}, {'name': 'private', 'settings': {'comment': 'private directories', 'browseable': 'no', 'public': 'no', 'dfree__command': '/usr/local/bin/dfree'}}]
   tasks:
     - name: Include role 'samba'
       include_role:

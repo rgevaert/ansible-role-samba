@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/de-it-krachten/ansible-role-samba/compare/v1.1.0...v1.1.1) (2022-03-21)
+
+
+### Bug Fixes
+
+* remove trailing whitespace from template ([e7285ed](https://github.com/de-it-krachten/ansible-role-samba/commit/e7285edf434c1e438a14339f598fec2ef8c744ce))
+
 # [1.1.0](https://github.com/de-it-krachten/ansible-role-samba/compare/v1.0.0...v1.1.0) (2022-03-13)
 
 

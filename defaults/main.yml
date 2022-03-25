@@ -23,6 +23,9 @@ samba_shares: []
 # Should the samba users be defined as OS users
 samba_create_users: false
 
+# Default group for shares
+samba_group_shares: sambashare
+
 # List of local samba users
 samba_users: []
 

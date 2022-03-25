@@ -63,6 +63,8 @@
 - name: Ensure that the samba users exists
   user:
     name: "{{ item.name }}"
+    group: "{{ samba_group_shares }}"
+    shell: /usr/sbin/nologin
     state: present
   loop: "{{ samba_users }}"
   loop_control:

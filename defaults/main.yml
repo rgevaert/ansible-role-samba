@@ -26,6 +26,9 @@ samba_create_users: false
 # Default group for shares
 samba_group_shares: sambashare
 
+# workgroup name
+samba_workgroup: WORKGROUP
+
 # List of local samba users
 samba_users: []
 
